@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemberDAO">
+	<resultMap type="kh.spring.dto.MemberDTO" id="MemberDTO">
+		<result property="image" column="img"/>
+	</resultMap>
+
+	<insert id="insert">
+		insert into member values(member_seq.nextval,#{id},#{password},#{name},#{phone},#{image})
+	</insert>
+	<insert id="insertNoImg">
+		insert into member values(member_seq.nextval,#{id},#{password},#{name},#{phone},null)
+	</insert>
+	<select id="idPwExist" resultType="Integer">
+		select Count(*)as idPw from member where id = #{id} and password = #{pw} 
+	</select>
+	<select id="idDupleCheck" resultType="Integer">
+		select Count(*)as id from member where id = #{value}
+	</select>
+	<select id="selectAll" resultMap="MemberDTO">
+		select * from member where id = #{value}
+	</select>
+	<update id="alterMyInfoWithPw">
+		update member set password = #{pw}, phone = #{phone}, img = #{image} where id = #{id}
+	</update>
+	<update id="alterMyinfo">
+		update member set phone = #{phone}, img=#{image} where id = #{id}
+	</update>
+	<delete id="withdrawal">
+		delete from member where id = #{value}
+	</delete>
+</mapper>
