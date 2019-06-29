@@ -21,13 +21,41 @@
 		
 	})
 </script>
+ <style>
+        div{border: 0px solid black;}
+        #wrapper{box-sizing: border-box; overflow: hidden; height: 100px; width: 300px; margin: auto; margin-top: 150px;}
+        
+        
+        
+        header{text-align: center; height: 25%; width: 100%; color: #7C7877; background-color: #ABD0CE; font-weight: bold; font-size: 20px; line-height: 25px;}
+        section{height: 40%; width: 100%; background-color: #F0E5DE;}
+        section div{float: left;}
+        section div:first-child{height: 100%; width: 30%; text-align: right; line-height: 50px;} 
+        section div:last-child{height: 100%; width: 70%; }
+        input[type="password"]{ background-color: #D9D4CF; border: none; height: 17px; position: relative; top: 13px; left: 10px;}
+        footer{background-color: #F0E5DE; height: 35%; width: 100%; text-align: center;}
+        input[type="button"]{position: relative; top: 5px; background-color: #ABD0CE; border: none; color: #7C7877; font-size: 15px;}
+        
+        
+    </style>
 <title>Insert title here</title>
 </head>
 <body>
-	비밀번호 확인<br>
-	<form action="checkPwProc" id="checkForm" method="post">
-	<input type="password" class="checkPw" name="pw"><input type="button" class="Btn" value="확인">
-	<input type="button" class="toHome-btn" value="홈으로">
-		</form>
+    <div id="wrapper">
+        <header>P A S S W O R D</header>
+        <section>
+            <form action="checkPwProc" id="checkForm" method="post">
+            <div>비밀번호</div>
+            
+            <div>
+                <input type="password" class="checkPw" name="pw">
+            </div>
+            </form>
+        </section>
+        <footer>
+            <input type="button" value="확인" class="btn">
+            <input type="button" value="홈으로" class="toHome-btn">  
+        </footer>  
+    </div>
 </body>
 </html>

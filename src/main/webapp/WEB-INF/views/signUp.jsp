@@ -6,13 +6,23 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
 <title>signUp</title>
-<style>
-	#wrapper{border: 1px solid black; width: 400px; margin: auto; text-align:center;}
-	
-</style>
+ <style>
+       
+        #wrapper{margin: auto; width: 330px; height: 300px; margin-top:150px;}
+        header{text-align: center; background-color: #ABD0CE; height: 10%; line-height: 30px; font-weight: bold; color: #7C7877;}
+        #contents{background-color: #F0E5DE; height: 75%;}
+        #contents div{float: left; position: relative; top: 10px;}
+        #contents div:first-child{width: 30%; height: 100%; text-align: right;}
+        #contents div:nth-child(2){width: 70%; height: 100%; position: relative; left: 10px;}
+        input[type="text"],input[type="password"]{background-color: #D9D4CF; border: none; height: 17px;}
+       
+        footer{height: 15%; background-color: #F0E5DE; line-height: 50px;}
+        footer div{position:relative; top: 5px;}
+        input[type="button"],input[type="reset"]{background-color: #ABD0CE; border: none; font-size: 13px;}
+    </style>
 <script>
 	$(function(){
-		$(".signUpBtn").on("click",function(){
+		$(".signUp-btn").on("click",function(){
 			if($("#id").val() == ""){alert("아이디를 입력해주세요.")}
 			else if($("#password").val() == ""){alert("비밀번호를 입력해주세요.")}
 			else if($(".name").val() == ""){alert("이름을 입력해주세요.")}
@@ -21,7 +31,7 @@
 			$("#signUpForm").submit();
 			
 		})
-		$(".cancelBtn").on("click",function(){
+		$(".cancel-btn").on("click",function(){
 			location.href="/";
 		})
 // 		$("#idDupleCheckBtn").on("click",function(){
@@ -65,21 +75,34 @@
 </script>
 </head>
 <body>
-	<div id="wrapper">
-	<form action="signUpProc" method="post" id="signUpForm" enctype="multipart/form-data">
-		아이디<input type="text" name="id" id="id">
-		<span class="idSpan"></span><br>
-		비밀번호<input type="password" name="password" id="password"><br>
-		비밀번호 확인 <input type="password" name="checkPw" id="checkPw">
-		<span class="pwSpan"></span><br>
-		이름<input type="text" name="name" class="name"><br>
-		전화번호 <input type="text" name="phone" class="phone"><br>
-		프로필 사진<input type="file" name="image" accept=".jpg, .png" >
-		<input type="button" value="완료" class="signUpBtn">
-		<input type="reset" value="초기화">
-		<input type="button" value="취소" class="cancelBtn">
-	</form>
-	
-	</div>
+    <div id="wrapper">
+        <header>S I G N U P</header>
+        <form action="signUpProc" method="post" id="signUpForm" enctype="multipart/form-data">
+        <div id="contents">
+            <div>
+                아이디<br><br>
+                비밀번호<br><br>
+                비밀번호 확인<br><br>
+                이름<br><br>
+                전화번호<br><br>
+                프로필 사진
+            </div>
+            <div>
+                <input type="text" name="id" id="id"><br>
+                <span class="idSpan"></span><br>
+                <input type="password" name="password" id="password"><br><br>
+                <input type="password" name="checkPw" id="checkPw"><br><br>
+                <input type="text" name="name" class="name"><br><br>
+                <input type="text" name="phone" class="phone"><br><br>
+                <input type="file" name="image" accept=".jpg, .png, .gif">
+            </div>
+        </div>
+        <footer>
+            <input type="button" class="signUp-btn" value="완료">
+            <input type="reset" value="초기화">
+            <input type="button" class="cancel-btn" value="취소">
+        </footer>
+        </form>
+    </div>
 </body>
 </html>

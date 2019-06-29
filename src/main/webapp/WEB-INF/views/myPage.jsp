@@ -9,7 +9,7 @@
 <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
 <script>
 	$(function(){
-		$(".cancelBtn").on("click",function(){
+		$(".cancel-btn").on("click",function(){
 			location.href="/";
 		});
 		$(".id").val("${myInfo.id}");
@@ -18,14 +18,14 @@
 		$(".profileImage").html("<img src='${myInfo.image}'>");
 	
 		
-		$(".toWithdrawal-Btn").on("click",function(){
+		$(".toWithdrawal-btn").on("click",function(){
 			var result = confirm("회원탈퇴를 하시겠습니까?");
 			if(result == true){
 				location.href="checkPw?num=2";
 			}
 		})
 		
-		$(".alterBtn").on("click",function(){
+		$(".alter-btn").on("click",function(){
 			//alert($(".picPath").attr("pic"));
 			$.ajax({
 				url:'alterMyInfo',
@@ -47,7 +47,7 @@
 				}
 			})
 		});
-		$(".fileBtn").on("change",function(){
+		$(".file-btn").on("change",function(){
 			var form = new FormData(document.getElementById("myInfoForm"));
 			$.ajax({
 				url:"changeProPic",
@@ -71,25 +71,53 @@
 </script>
 <style>
 	img{width:200px; height:200px;}
-</style>
+ div{border:px solid black;}
+        #wrapper{ width: 350px; height: 530px; margin: auto; margin-top: 100px; 
+        			box-sizing: border-box;  margin-bottom: 100px;}
+        header{width: 100%; text-align: center; background-color: #ABD0CE; color: #7C7877; font-size: 20px; font-weight: bold; line-height: 40px;}
+        .profileImage{height: 40%; background-color: #F0E5DE; text-align: center; padding-top:10px;}
+        .contents{height: 45%; background-color: #F0E5DE; padding-top:10px;}
+        .contents div{float: left;}
+        .contents div:first-child{text-align: right; width: 35%; height: 100%;}
+        .contents div:nth-child(2){position: relative; left: 10px; width: 65%; height: 100%;}
+        input[type="text"],input[type="password"]{background-color: #D9D4CF; border: none; height: 17px;}
+        footer{background-color: #F0E5DE; height: 8%; text-align:center;}
+        input[type="button"]{background-color: #ABD0CE; border: none; font-size: 15px; color: #7C7877;}}
+        
+        
+    </style>
 <title>My Page</title>
 </head>
 <body>
-	<div id="wrapper">
-	<div class="profileImage"></div>
-	<input type="hidden" pic="${myinfo.image}" class="picPath">
-		
-		<form action="alterMyInfo" method="post" id="myInfoForm">
-		<div><input type="file" class="fileBtn" accept=".jpg, .png" value="프로필 사진 수정" name="image"></div>
-			아이디<input type="text" class="id" name="id" readonly><br>
-			비밀번호<input type="password" class="password" name="password"><br>
-			비밀번호 확인<input type="password" class="checkPw" name="checkPw"><br>
-			이름<input type="text" class="name" name="name" readonly><br>
-			전화번호<input type="text" class="phone" name="phone"><br>
-			<input type="button" class="alterBtn" value="수정">
-			<input type="button" class="cancelBtn" value="취소">
-			<input type="button" class="toWithdrawal-Btn" value="회원탈퇴">
-		</form>
-	</div>
+    <div id="wrapper">
+        <header>M Y P A G E</header>
+        <div class="profileImage"></div>
+        <input type="hidden" pic="${myinfo.image}" class="picPath">
+        <div class="contents">
+        <form action="alterMyInfo" method="post" id="myInfoForm" enctype="multipart/form-data">
+            <div>
+            프로필사진 수정<br><br>
+            아이디<br><br>
+            비밀번호<br><br>
+            비밀번호 확인<br><br>
+            이름<br><br>
+            전화번호<br><br>
+            </div>
+            <div>
+                <input type="file" class="file-btn" accept=".jpg, .png, .gif" name="image"><br><br>
+                <input type="text" class="id" name="id" readonly><br><br>
+                <input type="password" class="password" name="password"><br><br>
+                <input type="password" class="checkPw" name="checkPw"><br><br>
+                <input type="text" class="name" name="name" readonly><br><br>
+                <input type="text" class="phone" name="phone"><br><br>
+            </div>
+        </form>
+        </div>
+        <footer>
+            <input type="button" value="수정" class="alter-btn">
+            <input type="button" value="회원탈퇴" class="toWithdrawal-btn">
+            <input type="button" value="홈으로" class="cancel-btn">
+        </footer>
+    </div>
 </body>
 </html>
