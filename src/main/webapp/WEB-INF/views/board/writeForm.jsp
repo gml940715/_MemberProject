@@ -29,7 +29,7 @@
 				type:"post"
 				}).done(function(resp){
 					console.log("이미지 : " + resp);
-					$(".textarea").append("<div><img src='"+resp+"'></div>");
+					$(".textarea").append("<img src='"+resp+"'>");
 				});
 		});
 	});

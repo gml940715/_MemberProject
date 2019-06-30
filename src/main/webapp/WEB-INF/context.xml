@@ -13,9 +13,9 @@
 
 	 	<context:component-scan base-package="kh.spring"></context:component-scan>
 	 	
- 		<aop:aspectj-autoproxy proxy-target-class="true"/>
+ 		<aop:aspectj-autoproxy proxy-target-class="true"/> <!-- AOP -->
  		
- 		<tx:annotation-driven transaction-manager="txManager"/>
+ 		<tx:annotation-driven transaction-manager="txManager"/> <!-- 트랜잭션 -->
  	
  	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
  		<property name="prefix" value="/WEB-INF/views/"></property>
