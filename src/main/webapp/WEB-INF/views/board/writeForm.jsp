@@ -29,7 +29,7 @@
 				type:"post"
 				}).done(function(resp){
 					console.log("이미지 : " + resp);
-					$(".textarea").append("<img src='"+resp+"'>");
+					$(".textarea").append("<div><img src='"+resp+"'></div>");
 				});
 		});
 	});
@@ -41,11 +41,12 @@
             .header div:first-child{text-align: center;}
             .content div:first-child{padding: 0;}
             .textarea{height: 500px; background-color: #f8ecc9; 
-                      overflow: hidden; word-wrap: break-word;}
+                      overflow: hidden; word-wrap: break-word; overflow-y:auto;}
             .footer{text-align: center; background-color: #f1bbba; height: 40px;}
              input[type="button"]{background-color: #a79c8e; border: none; position:relative; top: 6.5px;}
              input[type="button"]:hover{font-weight: bold;}
              .title{border-style:none; border-bottom: 3px solid #eb9f9f;  background:none; width:80%;}
+             img{height: 300px; width: 300px; content-algin: center;}
         </style>
 </head>
 <body>

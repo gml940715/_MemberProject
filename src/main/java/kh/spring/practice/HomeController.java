@@ -111,8 +111,8 @@ public class HomeController {
 			e.printStackTrace();
 		}
 		if(result == true) { // 아이디가 있음
-			return  "존재합니다";
-		}return "존재안함";
+			return  "현재 사용중인 아이디 입니다.";
+		}return "사용가능한 아이디입니다.";
 	}
 	@RequestMapping("/loginProc") // 로그인 
 	public ModelAndView loginProc1(String id, String password, HttpServletRequest request) {

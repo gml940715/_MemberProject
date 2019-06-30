@@ -36,7 +36,7 @@
         footer{background-color: #F0E5DE; height: 35%; width: 100%; text-align: center;}
         input[type="button"]{position: relative; top: 5px; background-color: #ABD0CE; border: none; color: #7C7877; font-size: 15px;}
         
-        
+        img{height: 300px; width: 300px;}
     </style>
 <title>Insert title here</title>
 </head>
