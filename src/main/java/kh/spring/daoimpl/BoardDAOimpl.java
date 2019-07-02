@@ -228,5 +228,17 @@ public class BoardDAOimpl implements BoardDAO{
 		}
 		return sb.toString();
 	}
+	@Override
+	public int alterContent1(int seq, String title, String content) {
+		String sql = "update board set title = ?, contents = ? where seq = ?"; 
+		int result = template.update(sql, new Object[] {title, content, seq});
+		return result;
+	}
+	@Override
+	public int alterContent2(int seq, String title, String content, String img) {
+		String sql = "update board set title = ?, contents = ?, img = ? where seq = ?"; 
+		int result = template.update(sql, new Object[] {title, content, img, seq});
+		return result;
+	}
 
 }

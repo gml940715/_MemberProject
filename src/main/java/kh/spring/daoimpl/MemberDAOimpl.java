@@ -68,6 +68,7 @@ public class MemberDAOimpl implements MemberDAO{
 	public int withdrawal(String id) {
 		return sst.delete("MemberDAO.withdrawal",id);
 	}
+	@Override
 	public String replaceAll(String text) {
 		text = text.replaceAll("\"","'" );
 		return text;

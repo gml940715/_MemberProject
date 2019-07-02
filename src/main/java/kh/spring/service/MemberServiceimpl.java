@@ -1,4 +1,4 @@
-package kh.spring.daoimpl;
+package kh.spring.service;
 
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
@@ -7,14 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import kh.spring.dto.BoardDTO;
+import kh.spring.dao.MemberDAO;
 import kh.spring.dto.MemberDTO;
 import kh.spring.tx.MemberService;
 
 @Component
 public class MemberServiceimpl implements MemberService{
 	@Autowired
-	private MemberDAOimpl dao;
+	private MemberDAO dao;
 	@Autowired
 	private DataSource ds;
 	@Autowired

@@ -11,4 +11,5 @@ public interface MemberDAO {
 	public int alterMyInfoWithPw(String pw, String phone,String image, String id);
 	public int alterMyinfo(String phone, String image, String id);
 	public int withdrawal(String id);
+	public String replaceAll(String text);
 }

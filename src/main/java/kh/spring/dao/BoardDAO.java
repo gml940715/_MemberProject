@@ -17,5 +17,7 @@ public interface BoardDAO {
 	public BoardDTO content(int seq);
 	public int deletePost(int seq);
 	public int viewCount(int seq);
+	public int alterContent1(int seq, String title, String content);
+	public int alterContent2(int seq, String title, String content,  String img);
 	
 }

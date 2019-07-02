@@ -56,7 +56,7 @@
             input[type="text"],select{position: relative; top: 10px;}
             input[type="button"]{position: relative; top: 10px; background-color: #eb9f9f; border: none;}
             input[type="button"]:hover{font-weight:bold;}
-            img{height: 163px; width:265.36px; margin-top:13px;}
+            img{height: 163px; width:265.36px; padding:10px;}
             a{color:black;}
             a:hover{font-weight:bold; color:black; }
         </style>

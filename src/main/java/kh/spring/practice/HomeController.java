@@ -17,9 +17,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import kh.spring.daoimpl.MemberServiceimpl;
 import kh.spring.dto.MemberDTO;
 import kh.spring.dto.SignUpDTO;
+import kh.spring.tx.MemberService;
 
 
 @Controller
@@ -28,7 +28,7 @@ public class HomeController {
 	@Autowired
 	private HttpSession session;
 	@Autowired
-	private MemberServiceimpl ms;
+	private MemberService ms;
 
 	@RequestMapping("/")
 	public ModelAndView toHome() {

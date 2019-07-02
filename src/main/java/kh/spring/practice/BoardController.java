@@ -1,8 +1,9 @@
 package kh.spring.practice;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -11,12 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import kh.spring.daoimpl.BoardServiceimpl;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import kh.spring.dto.BoardDTO;
+import kh.spring.dto.CommentsDTO;
 import kh.spring.dto.FileDTO;
+import kh.spring.tx.BoardService;
+import kh.spring.tx.CommentsService;
 
 @Controller
 public class BoardController {
@@ -24,7 +30,9 @@ public class BoardController {
 	@Autowired
 	private HttpSession session;
 	@Autowired
-	private BoardServiceimpl bs;
+	private BoardService bs;
+	@Autowired
+	private CommentsService cs;
 
 	@RequestMapping("toBaordList")
 	public ModelAndView toBoard(HttpServletRequest request) {
@@ -60,8 +68,10 @@ public class BoardController {
 		return mav;
 	}
 	@RequestMapping("toWriteForm")
-	public String toWriteForm() {
-		return "board/writeForm";
+	public ModelAndView toWriteForm() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("board/writeForm");
+		return mav;
 	}
 
 	@RequestMapping("writeProc.board")
@@ -86,27 +96,17 @@ public class BoardController {
 			mav.setViewName("redirect:/toBaordList?currentPage="+session.getAttribute("currentPage"));
 		}else { // 이미지가 있을 경우
 
-			String resourcePath = session.getServletContext().getRealPath("/resources");
-			String boardPath = resourcePath + "/board";
-			String datePath = boardPath +"/"+ date;
-			String usersPath = datePath + "/" + id;
+			bs.imageUpload(fdto);//서버에 이미지 업로드
 
-			System.out.println("이미지 경로 : " + resourcePath);
-
-			File uploadPath = new File(usersPath);
-			if(!uploadPath.exists()) {
-				uploadPath.mkdirs();
-			}
-			String pjPath = null;
-			try {
-				fdto.getImg().transferTo(new File(usersPath +"/"+ time+ "_board_image.png"));
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-			pjPath = "/board"+"/"+ date +"/" + id +"/"+ time + "_board_image.png";
+			String pjPath = "/board"+"/"+ date +"/" + id +"/"+ time + "_board_image.png";
 			System.out.println(pjPath);
-
-			BoardDTO bdto = new BoardDTO(0, fdto.getTitle(), fdto.getContents(), pjPath, id, null, 0);
+			String regex = "<img src=\"(.+?)\">";
+			Pattern p = Pattern.compile(regex);
+			Matcher m = p.matcher(fdto.getContents());
+			if(m.find()) {m.group(1);}
+			
+			
+			BoardDTO bdto = new BoardDTO(0, fdto.getTitle(), fdto.getContents(), m.group(1), id, null, 0);
 			int result = 0;
 			try {
 				result = bs.insert(bdto);
@@ -175,28 +175,11 @@ public class BoardController {
 	}
 	@ResponseBody
 	@RequestMapping("uploadImage")
-	public String uploadImage(MultipartFile img) {
-		System.out.println(img);
-		String id = (String)session.getAttribute("loginId");
+	public String uploadImage(FileDTO fdto) {
 		String date = new SimpleDateFormat("yyyyMMdd").format(new java.util.Date());
 		long time = System.currentTimeMillis();
-
-		String resourcePath = session.getServletContext().getRealPath("/resources");
-		String boardPath = resourcePath + "/board";
-		String datePath = boardPath +"/"+ date;
-		String usersPath = datePath + "/" + id;
-
-		System.out.println("이미지 경로 : " + resourcePath);
-
-		File uploadPath = new File(usersPath);
-		if(!uploadPath.exists()) {
-			uploadPath.mkdirs();
-		}
-		try {
-			img.transferTo(new File(usersPath +"/"+ time+ "_board_image.png"));
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
+		String id = (String)session.getAttribute("loginId");
+		bs.imageUpload(fdto);
 		String pjPath = "/board"+"/"+ date +"/" + id +"/"+ time + "_board_image.png";
 		return pjPath;
 	}
@@ -226,5 +209,72 @@ public class BoardController {
 		mav.setViewName("redirect:/toBaordList?currentPage="+session.getAttribute("currentPage"));
 		return mav;
 	}
-
+	@RequestMapping("toAlter")
+	public ModelAndView toAlter(HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView();
+		int seq = Integer.parseInt(request.getParameter("seq"));
+		BoardDTO content = null;
+		try {
+			content = bs.content(seq);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		mav.addObject("content",content);
+		mav.setViewName("board/alterForm");
+		return mav;
+	}
+	@RequestMapping("alterProc.board")
+	public ModelAndView alterProc(HttpServletRequest request, FileDTO fdto) {
+		ModelAndView mav = new ModelAndView();
+		
+		int seq = Integer.parseInt(request.getParameter("seq"));
+		String title = request.getParameter("title");
+		String content = request.getParameter("contents");
+		System.out.println(content);
+		int result = 0;
+		if(fdto.getImg().getSize() == 0) {
+			
+			try {
+				result = bs.alterProc1(seq, title, content); // 이미지 없는 것
+				mav.addObject("result",result);
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}else {
+				String pjPath = bs.imageUpload(fdto);
+			try {
+				result = bs.alterProc2(seq, title, content, pjPath); //이미지 있는 것
+				mav.addObject("result",result);
+				
+			}catch(Exception e) {
+				e.printStackTrace();	
+			}
+		}
+		mav.addObject("seq",seq);
+		mav.setViewName("board/alterView");
+		return mav;
+	}
+//--댓글!!-----------------------------------------------------------------------------------
+	@ResponseBody
+	@RequestMapping(value="commentProc", produces="text/plain;charset=utf-8")
+	public String commentProc(String commentInfo, HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView();
+		JsonParser jp = new JsonParser();
+		JsonObject root = jp.parse(commentInfo).getAsJsonObject();
+		String comment = root.get("comment").getAsString();
+		int postNum = root.get("postNum").getAsInt();
+		String id = (String)session.getAttribute("loginId");
+		String ip = request.getRemoteAddr();
+		
+		CommentsDTO cdto = new CommentsDTO(0, comment, id, postNum, ip, null);
+		int result = 0;
+		try {
+			result = cs.comments(cdto);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new Gson().toJson(cdto);
+	}
 }
